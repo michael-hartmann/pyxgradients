@@ -1036,45 +1036,55 @@ _viridis_data = [
     [0.993248, 0.906157, 0.143936]
 ]
 
-def gradient(x, data):
+def gradient(x, color, data):
+    mapping = { "r": 0, "g": 1, "b": 2 }
+    cindex = mapping[color]
     if x == 0:
-        return data[0]
+        return data[0][cindex]
     elif x == 1:
-        return data[-1]
+        return data[-1][cindex]
 
-    elems = len(data)
-    index = int(round((elems-1)*x,0))
-    return data[index]
+    elems = float(len(data))
+    index = int((elems-1)*x)
+    rgbm = data[index]
+    rgbp = data[index+1]
+
+    x0 = index/(elems-1)
+    x1 = (index+1)/(elems-1)
+    f0 = data[index][cindex]
+    f1 = data[index+1][cindex]
+
+    return f0 + (f1-f0)/(x1-x0)*(x-x0)
 
 
 magma = functiongradient_rgb(
-    f_r = lambda x: gradient(x,_magma_data)[0],
-    f_g = lambda x: gradient(x,_magma_data)[1],
-    f_b = lambda x: gradient(x,_magma_data)[2]
+    f_r = lambda x: gradient(x,"r",_magma_data),
+    f_g = lambda x: gradient(x,"g",_magma_data),
+    f_b = lambda x: gradient(x,"b",_magma_data)
 )
 
 inferno = functiongradient_rgb(
-    f_r = lambda x: gradient(x,_inferno_data)[0],
-    f_g = lambda x: gradient(x,_inferno_data)[1],
-    f_b = lambda x: gradient(x,_inferno_data)[2]
+    f_r = lambda x: gradient(x,"r",_inferno_data),
+    f_g = lambda x: gradient(x,"g",_inferno_data),
+    f_b = lambda x: gradient(x,"b",_inferno_data)
 )
 
 plasma = functiongradient_rgb(
-    f_r = lambda x: gradient(x,_plasma_data)[0],
-    f_g = lambda x: gradient(x,_plasma_data)[1],
-    f_b = lambda x: gradient(x,_plasma_data)[2]
+    f_r = lambda x: gradient(x,"r",_plasma_data),
+    f_g = lambda x: gradient(x,"g",_plasma_data),
+    f_b = lambda x: gradient(x,"b",_plasma_data)
 )
 
 viridis = functiongradient_rgb(
-    f_r = lambda x: gradient(x,_viridis_data)[0],
-    f_g = lambda x: gradient(x,_viridis_data)[1],
-    f_b = lambda x: gradient(x,_viridis_data)[2]
+    f_r = lambda x: gradient(x,"r",_viridis_data),
+    f_g = lambda x: gradient(x,"g",_viridis_data),
+    f_b = lambda x: gradient(x,"b",_viridis_data)
 )
 
 if __name__ == "__main__":
     from numpy import linspace
     from pyx import *
-    from gradients import magma,inferno,plasma,viridis
+    from pyxgradients import magma,inferno,plasma,viridis
     from math import sin,cos
 
     def f(x,y):
