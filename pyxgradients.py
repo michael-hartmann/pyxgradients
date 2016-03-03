@@ -1092,7 +1092,7 @@ if __name__ == "__main__":
 
     xmin,xmax = -5,5
     ymin,ymax = -5,5
-    npnts = 200
+    npnts = 500
 
     data = []
     for x in linspace(xmin,xmax,npnts):
