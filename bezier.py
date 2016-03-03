@@ -76,7 +76,7 @@ if __name__ == "__main__":
     bezier = BezierModel(viridis["xp"], viridis["yp"])
 
     # wir wollen (R,G,B) fuer den Wert bei at
-    at = 0.0784313725490196
+    at = np.linspace(0,1,256)
     ap,bp = bezier.get_bezier_points_at([at])
     Jp = (viridis["max_Jp"] - viridis["min_Jp"]) * at + viridis["min_Jp"]
 
